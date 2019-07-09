@@ -1,0 +1,5 @@
+1.打开VMware，网络适配器设置为NAT模式
+2.已root用户登陆，进入：cd /etc/sysconfig/network-scripts/
+3.修改该目录下的 vi ifcfg-ens33 文件，
+	BOOTPROTO=dhcp
+	ONBOOT=yes
