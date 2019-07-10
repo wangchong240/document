@@ -60,6 +60,5 @@ RabbitMQ－Server：3.5.1
 	rabbitmqctl list_users
 	
 浏览器输入：serverip:15672。其中serverip是RabbitMQ-Server所在主机的ip。
-.
 
 
