@@ -1,0 +1,23 @@
+1.官网下载地址
+	http://kafka.apache.org/downloads
+	
+2.解压
+	tar zxvf kafka_2.12-2.3.0.tgz
+	
+3.移动
+	
+	mv kafka_2.12-2.3.0 /usr/local 
+	
+4.配置kakfa配置文件
+
+	cd kafka_2.12-2.3.0/conf
+	vim server.properties
+	
+	4.1 修改 broker.id=0 
+	4.2 host.name=192.168.64.129
+		port=9092
+	4.3 log.dirs=/tmp/kafka-logs
+	4.4 zookeeper.connect=192.168.64.129:2181, 192.168.64.129:2182, 192.168.64.129:2183
+	
+配置第二台时，如果不在同一台机器上，修改以上参数
+
