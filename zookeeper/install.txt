@@ -1,0 +1,159 @@
+centos7安装zookeeper3.4.9集群
+
+zookeeper的三要素：
+
+	1、一致，能够保证数据的一致性
+
+	2、有头，始终有一个leader，node/2+1个节点有效，就能正常工作(因此至少3台作为集群)
+
+	3、数据树，树状结构且每个树必须有数据
+
+环境准备
+
+	操作系统：CentOS Linux release 7.2.1511 (Core)
+
+	JDK版本：1.8.0_121
+
+	三台服务器：192.168.1.91; 192.168.1.92; 192.168.1.93;
+
+下载zookeeper
+	
+	下载地址：https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/
+	
+拷贝zookeeper
+
+	先创建/soft目录，然后利用WinSCP拷贝到该目录下
+	[root@localhost /]# mkdir /soft
+
+解压zookeeper
+
+	[root@localhost /]# cd /soft/
+
+	[root@localhost soft]# tar zxvf zookeeper-3.4.9.tar.gz
+
+	移动到/usr/local目录下
+
+	[root@localhost soft]# mv zookeeper-3.4.9 /usr/local/zookeeper
+
+配置zookeeper
+	
+	1、  创建数据目录
+
+	下面zoo.cfg配置文件的dataDir将会修改为这个目录
+
+	[root@localhost zookeeper]# cd /usr/local/zookeeper
+
+	[root@localhost zookeeper]# mkdir data
+	
+	2、配置zoo.cfg
+
+	[root@localhost zookeeper]# cd conf
+
+	[root@localhost conf]# cp zoo_sample.cfg zoo.cfg
+
+	[root@localhost conf]# vi zoo.cfg
+
+	先把dataDir=/tmp/zookeeper注释，然后将下面四行代码添加到文件末尾
+
+	dataDir=/usr/local/zookeeper/data
+
+	server.1=192.168.1.91:2888:3888
+
+	server.2=192.168.1.92:2888:3888
+
+	server.3=192.168.1.93:2888:3888
+	
+	3、创建myid文件
+
+	[root@localhost conf]# cd ../data
+
+	[root@localhost data]# touch myid
+
+	[root@localhost data]# echo "1">>myid
+	
+拷贝zookeeper
+	
+	拷贝zookeeper到另外两台机器
+
+	[root@localhost data]# scp -r /usr/local/zookeeper root@192.168.1.92:/usr/local/
+
+	[root@localhost data]# scp -r /usr/local/zookeeper root@192.168.1.93:/usr/local/
+
+	中间会要求输入密码，分别输入你另外两台机器的密码就行了	
+	
+修改myid文件
+
+	192.168.1.92的myid内容改为2
+
+	[root@localhost zookeeper]# cd /usr/local/zookeeper/data
+
+	[root@localhost data]# echo "2">myid
+
+	192.168.1.93的myid内容改为3
+
+	[root@localhost zookeeper]# cd /usr/local/zookeeper/data
+
+	[root@localhost data]# echo "3">myid	
+
+开启zookeeper端口
+
+	开启2888、3888、2181端口
+
+	[root@localhost data]# firewall-cmd --zone=public --add-port=2888/tcp --permanent
+
+	[root@localhost data]# firewall-cmd --zone=public --add-port=3888/tcp --permanent
+
+	[root@localhost data]# firewall-cmd --zone=public --add-port=2181/tcp --permanent
+
+重启防火墙
+
+	[root@localhost data]# firewall-cmd --reload	
+	
+启动zookeeper
+	1、启动（每台机器都要启动）
+
+	[root@localhost bin]# /usr/local/zookeeper/bin/zkServer.sh start
+
+	如果输出以下内容，表示启动成功
+
+	ZooKeeper JMX enabled by default
+	Using config: /usr/local/zookeeper/bin/../conf/zoo.cfg
+	Starting zookeeper ... STARTED 
+	
+	2、  查看状态
+
+	[root@localhost data]# /usr/local/zookeeper/bin/zkServer.sh status
+
+	192.168.1.91
+
+	ZooKeeper JMX enabled by default
+	Using config: /usr/local/zookeeper/bin/../conf/zoo.cfg
+	Mode: follower
+	192.168.1.92
+
+	ZooKeeper JMX enabled by default
+	Using config: /usr/local/zookeeper/bin/../conf/zoo.cfg
+	Mode: leader
+	192.168.1.93
+
+	ZooKeeper JMX enabled by default
+	Using config: /usr/local/zookeeper/bin/../conf/zoo.cfg
+	Mode: follower
+	由此我们看出192.168.1.92这台机器被自动选举为leader了
+
+客户端连接
+
+	[root@localhost zookeeper]# /usr/local/zookeeper/bin/zkCli.sh -server 192.168.1.92:2181
+
+	最终如下图，表示连接成功：
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
