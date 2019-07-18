@@ -1,0 +1,16 @@
+1. 下载JDK
+	官方网站下载对应的jdk（liux）
+	
+2. 配置环境变量
+	2.1 vim /etc/profile
+	2.2 在配置文件中加入：
+		export JAVA_HOME=/usr/local/java/jdk1.8.0_162
+　　	export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+　　	export PATH=$PATH:$JAVA_HOME/bin
+
+3. 重新加载配置文件
+	source /etc/profile
+	
+4. 验证是否安装成功
+	java -version
+	
