@@ -4,7 +4,7 @@ kafka 原理浅谈
 	2.2 broker:负责消息的存储和读取
 	2.3 consumer:消息消费者，负责消息的读取
 	2.4 topic: 话题，对消费的分类，可以消息队列（queue）
-	2.5 partition: 消息的分区，是topic具体分区，是电脑磁盘的具体位置
+	2.5 partition: 消息的分区，是topic具体分区，是电脑磁盘的文件夹
 	2.6 zookeeper：元数据管理中心
 		1. Broker注册，用于选举 broker controller
 		2. Topic注册, 储存topic分区信息及与Broker的对应关系
@@ -12,5 +12,25 @@ kafka 原理浅谈
 		4. 消费者负载均衡
 		5. 分区 与 消费者 的关系
 		6. 记录消费进度（Offset）记录
-2.
+2.producer消息存储
+	0.8版本以后，producer会自己存储broker元素据，是通过连接broker来获取broker元素据：包括broker对应那个topic下的那个partition,每个topic下有几个分区等等，
+	默认：producer会根据数据中key的hashCode值和话题分取取模，放到对应的partition中
+	自定义：可以通过指定partitioner.class，来自定义存储规则，自定义类必须要实现Partitioner接口中的partition方法来实现自定义存储规则
+	key=null时
+
+3.consumer消息消费
+	1.consumer在zookeeper获取topic的分取信息，计算同组内consumer消费topic下的那个分取
+	2.consumer获取到topic下的对应分区的数据，进行消费
+	3.如果设置consumer中消费指针offset是自动提交的话，那么在消息阅读完，就会自动提交offset + 1
+	4.消费者业务逻辑处理
+	
+4. broker controller
+	
+
+5.消费者rebalance(在平衡或者负载均衡)
+
+6.kafka消息漏读与重复消费
+
+	
+
 
