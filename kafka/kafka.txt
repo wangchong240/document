@@ -1,0 +1,16 @@
+kafka 原理浅谈
+1.术语
+	1.1 producer:消息的生成者，负责消息的推送，消息的存储位置
+	2.2 broker:负责消息的存储和读取
+	2.3 consumer:消息消费者，负责消息的读取
+	2.4 topic: 话题，对消费的分类，可以消息队列（queue）
+	2.5 partition: 消息的分区，是topic具体分区，是电脑磁盘的具体位置
+	2.6 zookeeper：元数据管理中心
+		1. Broker注册，用于选举 broker controller
+		2. Topic注册, 储存topic分区信息及与Broker的对应关系
+		3. 生产者负载均衡, 由于每个Broker启动时，都会完成Broker注册过程，生产者会通过该节点的变化来动态地感知到Broker服务器列表的变更
+		4. 消费者负载均衡
+		5. 分区 与 消费者 的关系
+		6. 记录消费进度（Offset）记录
+2.
+
