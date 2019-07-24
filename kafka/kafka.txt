@@ -6,12 +6,7 @@ kafka 原理浅谈
 	2.4 topic: 话题，对消费的分类，可以消息队列（queue）
 	2.5 partition: 消息的分区，是topic具体分区，是电脑磁盘的文件夹
 	2.6 zookeeper：元数据管理中心
-		1. Broker注册，用于选举 broker controller
-		2. Topic注册, 储存topic分区信息及与Broker的对应关系
-		3. 生产者负载均衡, 由于每个Broker启动时，都会完成Broker注册过程，生产者会通过该节点的变化来动态地感知到Broker服务器列表的变更
-		4. 消费者负载均衡
-		5. 分区 与 消费者 的关系
-		6. 记录消费进度（Offset）记录
+	
 2.producer消息存储
 	0.8版本以后，producer会自己存储broker元素据，是通过连接broker来获取broker元素据：包括broker对应那个topic下的那个partition,每个topic下有几个分区等等，
 	默认：producer会根据数据中key的hashCode值和话题分取取模，放到对应的partition中
@@ -19,10 +14,15 @@ kafka 原理浅谈
 	key=null时
 
 3.consumer消息消费
-	1.consumer在zookeeper获取topic的分取信息，计算同组内consumer消费topic下的那个分取
-	2.consumer获取到topic下的对应分区的数据，进行消费
-	3.如果设置consumer中消费指针offset是自动提交的话，那么在消息阅读完，就会自动提交offset + 1
-	4.消费者业务逻辑处理
+	1. 在onsumer启动时，coordinate会从zookeeper读取消费组的成员信息，在没有完全加载完之前，consumer与coordinate所有请求都会返回错误编码
+	2. coordinate会根据consumer注册到zookeeper顺序选举出consumer leader,然后由leader来完成本组内的任务分配即每个消费者对应消费partition，回传给coordinate
+	3. consumer发送ConsumerMetadataRequest给任意一个brokers,在ConsumerMetadataResponse中，会接受到consumer group所属的coordinate(协调员)的位置信息
+	3. 获取coordinate信息后，consumer连接coordinate节点，连接成功后做如下操作：
+		3.1 consumer向coordinate发送HeartbeatRequest，如果是返回错误码，则说明coordinate处在初始化平衡
+		3.2 如果发现coordinate在初始化平衡，consumer会向coordinate发送JoinGroupRequest,如果返回自己对应的topic-partition以及offset信息后，则开始读取消息
+			如果返回错误码，则继续发送请求
+	4. 如果设置consumer中消费指针offset是自动提交的话，那么在消息阅读完，就会向coordinate发送OffsetCommitRequest，并将offset + 1
+	5. 消费者业务逻辑处理
 	
 4. broker controller
 	
