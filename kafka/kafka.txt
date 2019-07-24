@@ -24,7 +24,16 @@ kafka 原理浅谈
 	4. 如果设置consumer中消费指针offset是自动提交的话，那么在消息阅读完，就会向coordinate发送OffsetCommitRequest，并将offset + 1
 	5. 消费者业务逻辑处理
 	
-4. broker controller
+4. broker选举机制 (broker controller leader)
+	1. 选举learder: kafka集群中会有多个broker,当broker启动中，每个broker都会创建kafkaController,而每个broker上的kafkaController都会去zookeeper注册，谁先注册成功，改kafkaController
+	就被选举为learder
+	2. leader作用：
+		1. 每个topic下的partition都会有负责读写的broker,这个broker被称为改partition的learder,同时，每个partition都会有副本，而每个副本都会存在不同的broker上。
+		controller leader 就负责每个partition的leader选举，以及副本的选举。同时也会将信息同步给每个broker，为客户端提供实时的元数据
+		2. 当follwer挂掉之后，他会找到对应的partition中的副本存储的位置，按照顺序选出新的lerder
+		3. partiton副本的选举
+		4. controller leader 挂掉，借助zookeeper重新选举controller learder
+	
 	
 
 5.消费者rebalance(在平衡或者负载均衡)
