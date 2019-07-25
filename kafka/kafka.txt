@@ -14,15 +14,15 @@ kafka 原理浅谈
 	key=null时
 
 3.consumer消息消费
-	1. 在onsumer启动时，coordinate会从zookeeper读取消费组的成员信息，在没有完全加载完之前，consumer与coordinate所有请求都会返回错误编码
-	2. coordinate会根据consumer注册到zookeeper顺序选举出consumer leader,然后由leader来完成本组内的任务分配即每个消费者对应消费partition，回传给coordinate
-	3. consumer发送ConsumerMetadataRequest给任意一个brokers,在ConsumerMetadataResponse中，会接受到consumer group所属的coordinate(协调员)的位置信息
-	3. 获取coordinate信息后，consumer连接coordinate节点，连接成功后做如下操作：
+	1. 在onsumer启动时，consumer发送ConsumerMetadataRequest给任意一个brokers,该broker回去问learder 		      congroller,谁最闲，然后将其选举为coordinate，并在ConsumerMetadataResponse中，会将consumer group所属的coordinate(协调员)的位置信息返回
+	2. coordinate会从zookeeper读取消费组的成员信息，在没有完全加载完之前，consumer与coordinate所有请求都会返回错误编码
+	3. coordinate会根据consumer注册到zookeeper顺序选举出consumer leader,然后由leader来完成本组内的任务分配即每个消费者对应消费partition，回传给coordinate
+	4. 获取coordinate信息后，consumer连接coordinate节点，连接成功后做如下操作：
 		3.1 consumer向coordinate发送HeartbeatRequest，如果是返回错误码，则说明coordinate处在初始化平衡
 		3.2 如果发现coordinate在初始化平衡，consumer会向coordinate发送JoinGroupRequest,如果返回自己对应的topic-partition以及offset信息后，则开始读取消息
 			如果返回错误码，则继续发送请求
-	4. 如果设置consumer中消费指针offset是自动提交的话，那么在消息阅读完，就会向coordinate发送OffsetCommitRequest，并将offset + 1
-	5. 消费者业务逻辑处理
+	5. 如果设置consumer中消费指针offset是自动提交的话，那么在消息阅读完，就会向coordinate发送OffsetCommitRequest，并将offset + 1
+	6. 消费者业务逻辑处理
 	
 4. broker选举机制 (broker controller leader)
 	1. 选举learder: kafka集群中会有多个broker,当broker启动中，每个broker都会创建kafkaController,而每个broker上的kafkaController都会去zookeeper注册，谁先注册成功，改kafkaController
