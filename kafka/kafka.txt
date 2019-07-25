@@ -40,6 +40,13 @@ kafka 原理浅谈
 
 6.kafka消息漏读与重复消费
 
+7.kafka消息发送保证机制
+	Kafka producer有三种ack机制  初始化producer时在config中进行配置
+	1. ack=0  意味着producer不等待broker(learder)同步完成的确认,就发送下一条message
+	2. ack=1  意味着producer要等待leader成功收到数据并得到确认，才发送下一条message
+	3. ack=-1(all) 意味着producer得到learder、follwer确认，才发送下一条数据
+	
+
 	
 
 
