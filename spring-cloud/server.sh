@@ -1,10 +1,10 @@
 
 #!/bin/bash
  
-cd `dirname $0`
+cd 'dirname $0'
  
-CUR_SHELL_DIR=`pwd`
-CUR_SHELL_NAME=`basename ${BASH_SOURCE}`
+CUR_SHELL_DIR='pwd'
+CUR_SHELL_NAME='basename ${BASH_SOURCE}'
  
 JAR_NAME="ÏîÄ¿Ãû³Æ"
 JAR_PATH=$CUR_SHELL_DIR/$JAR_NAME
@@ -38,7 +38,7 @@ fi
 if [ "$1" == "start" ];then
  
     # check server
-    PIDS=`ps --no-heading -C java -f --width 1000 | grep $JAR_NAME | awk '{print $2}'`
+    PIDS='ps --no-heading -C java -f --width 1000 | grep $JAR_NAME | awk '{print $2}''
     if [ -n "$PIDS" ]; then
         echo -e "ERROR: The $JAR_NAME already started and the PID is ${PIDS}."
         exit 1
@@ -52,18 +52,18 @@ if [ "$1" == "start" ];then
     COUNT=0
     while [ $COUNT -lt 1 ]; do
         sleep 1
-        COUNT=`ps  --no-heading -C java -f --width 1000 | grep "$JAR_NAME" | awk '{print $2}' | wc -l`
+        COUNT='ps  --no-heading -C java -f --width 1000 | grep "$JAR_NAME" | awk '{print $2}' | wc -l'
         if [ $COUNT -gt 0 ]; then
             break
         fi
     done
-    PIDS=`ps  --no-heading -C java -f --width 1000 | grep "$JAR_NAME" | awk '{print $2}'`
+    PIDS='ps  --no-heading -C java -f --width 1000 | grep "$JAR_NAME" | awk '{print $2}''
     echo "${JAR_NAME} Started and the PID is ${PIDS}."
     echo "You can check the log file in ${LOG_PATH} for details."
  
 elif [ "$1" == "stop" ];then
  
-    PIDS=`ps --no-heading -C java -f --width 1000 | grep $JAR_NAME | awk '{print $2}'`
+    PIDS='ps --no-heading -C java -f --width 1000 | grep $JAR_NAME | awk '{print $2}''
     if [ -z "$PIDS" ]; then
         echo "ERROR:The $JAR_NAME does not started!"
         exit 1
@@ -80,7 +80,7 @@ elif [ "$1" == "stop" ];then
         sleep 1
         COUNT=1
         for PID in $PIDS ; do
-            PID_EXIST=`ps --no-heading -p $PID`
+            PID_EXIST='ps --no-heading -p $PID'
             if [ -n "$PID_EXIST" ]; then
                 COUNT=0
                 break
