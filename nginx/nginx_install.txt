@@ -1,0 +1,14 @@
+1. wget下载：http://nginx.org/download
+2. 进行安装：tar -zxvf nginx-1.6.2.tar.gz
+3. 下载需要的依赖库文件：
+	yum -y install pcre、 yum -y install pcre-devel
+	yum -y install zlib、 yum -y install zlib-devel
+4. 进行configure配置：
+	cd nginx-1.6.2 && ./configure --prefix=/usr/local/nginx 查看是否报错(安装到那个目录下，方便以后卸载)
+5. 编译安装 make && make install
+6. 启动 nginx:
+	cd /usr/local/nginx 目录下 : 查看如下4个目录
+	conf 配置文件、html网页文件、logs 日志文件、sbin 主要二进制程序
+	启动命令：/usr/local/sbin/nginx 关闭（-s stop）重启（-s reload）
+7 检查是否启动成功: netstat -ano|grep 80 失败：可能80端口被占用等，
+	浏览器访问地址：http://ip:port
