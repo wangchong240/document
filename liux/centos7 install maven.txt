@@ -1,0 +1,15 @@
+1.官网镜像下载：
+	wget http://mirrors.hust.edu.cn/apache/maven/   自己选择版本
+
+2.解压maven包
+	tar -zxvf apache-maven-3.6.0-bin.tar.gz -C /usr/local
+	
+3.配置maven 环境变量
+	添加环境变量 一般是 /etc/profile文件内添加
+	export MAVEN_HOME=/usr/local/apache-maven-3.6.0
+	export PATH=${MAVEN_HOME}/bin:$PATH
+	之后记得source 一下
+	可以用mvn -v查看命令是否生效和版本信息
+	
+4.自定义配置maven
+	setting.xml文件在安装目录 conf 下面，是配置本地仓库位置的地方
