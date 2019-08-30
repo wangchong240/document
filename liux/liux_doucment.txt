@@ -1,0 +1,8 @@
+1. type systemctl --找到systemctl真实地址
+2. file /sbin/systemctl --显示该路径的文件的属性，比如：ELF 可执行的二进制文件
+3. echo $PATH --打印命令，可以打印出变量,liux用 $ 来取变量，PATH变量的值之间是用 ：分隔
+4. 外部命令：用type可以找到对应文件路径的命令，然后用file 显示该文件的属性，例如：文本或者ELF等
+5. 内部命令：type echo ：显示is a shell buildbin 就是内部命令
+6. 外部命令学习： man systemctl ,可以显示该命令的用法
+7. 内部命令：help echo,用help能查看所有的内部命令
+7. 脚本执行原理：脚本是文本格式，本身不能执行，但是在编写脚本的时候第一行指定脚本解析器，运行时使用脚本解析器来解析执行文本脚本

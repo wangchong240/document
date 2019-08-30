@@ -1,0 +1,50 @@
+一：环境准备
+	机器要求：
+		1. 256 MB 内存，建议大于 512 MB
+		2. 10 GB 的硬盘空间（用于 Jenkins 和 Docker 镜像）
+	需要安装以下软件：
+		1. Java 8 ( JRE 或者 JDK 都可以)
+		2. Docker （非必须）
+
+二、jenkins 下载与启动
+	1. jenkins 中文官网 https://jenkins.io/zh/
+	2. jenkins 下载地址 http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+	3. 打开终端进入到下载目录
+	4. nohup java -jar jenkins.war --httpPort=8080  (端口可以不指定，默认8080)
+	5. 打开浏览器进入链接 http://localhost:8080 (首次登陆时，需要在控制台找到密码，会自动生成)
+	
+三、在页面安装插件
+	1. 汉化语言包：Localization: Chinese (Simplified)
+	2. maven 插件：Maven Integration plugin
+	3. 连接服务器插件：Publish Over SSH
+	4. svn 插件  ：Subversion Plug-in
+	
+四、jenkins配置
+	1. 全局配置：所有的全局配置，都能在每个执行器（具体任务）单独设置，除非所有的都相同，则可以在全局配置
+	2. 具体构建任务配置
+		通用配置
+			1. 任务描述：描述该任务的具体内容，已经是否与其它任务有耦合关系
+			2. 构建丢弃策略：设置保持构建的天数、保持构建的最大个数
+		
+		源码管理
+			1. 设置svn地址：注意一定要选到有pom.xml文件的上层文件夹
+			2. 设置svn用户名、密码
+			
+		构建触发器
+			1. 定时构建：具体表达式可以上网查
+		
+		构建环境
+			1. 构建环境暂时不选
+			2. build，设置以pom.xml形式构建，并给出打包命令：clean package
+			
+		构建后操作:（1）指定构建完的文件，上传到远程服务器位置（2）远程调用脚本，启动程序
+			SSH Server :设置
+				1. name：随意命名，但是最好表达与业务相关的名字
+				2. Transfers：传输设置，可以传输多个服务器
+					2.1 source files：设置jenkins构建完的文件地址，例如：**/crm-iom-0.0.1-SNAPSHOT.jar
+					2.2 remove prefix: 设置删除的前缀目录，否则会在远程服务器创建多层目录，例如：target/
+					2.3 remote directory: 远程服务器的存储文件的位置，例如：home/app
+					2.4 exec command: 执行命令，可以远程调用服务器的脚本，用来执行项目启动命令，例如：/home/app/iom_start.sh
+			
+			
+	
