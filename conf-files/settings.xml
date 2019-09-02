@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <!-- 本地仓库位置-->
+  <localRepository>F:/Software/repository</localRepository>
+
+  <servers>
+	<server>
+      <id>nexus</id>
+	  <!-- 用户名、密码 -->
+      <username>wc</username>
+      <password>wc</password>
+    </server>
+	<server>
+      <id>nexus-snapshots</id>
+	  <!-- 用户名、密码 -->
+      <username>wc</username>
+      <password>wc</password>
+    </server>
+  </servers>
+
+  <mirrors>
+    <mirror>
+      <id>alimaven</id>
+	  <name>aliyun mirror</name>
+	  <mirrorOf>central</mirrorOf> 
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+    </mirror>
+  </mirrors>
+
+  <profiles>
+	<profile>
+        <id>nexus-profile</id>
+        <repositories>
+			<repository>
+                <id>nexus</id>
+                <url>http://118.190.76.87:7081/repository/maven-releases/</url>
+                <releases>
+                    <enabled>true</enabled>
+					<updatePolicy>daily</updatePolicy>
+					<checksumPolicy>warn</checksumPolicy>
+                </releases>
+                <snapshots>
+                    <enabled>false</enabled>
+                </snapshots>
+            </repository>
+            <repository>
+                <id>nexus-snapshots</id>
+                <url>http://118.190.76.87:7081/repository/maven-snapshots/</url>
+                <releases>
+                    <enabled>false</enabled>
+                </releases>
+                <snapshots>
+                    <enabled>true</enabled>
+                    <updatePolicy>always</updatePolicy>
+                    <checksumPolicy>fail</checksumPolicy>
+                </snapshots>
+            </repository>
+        </repositories>
+		<pluginRepositories>    
+			<pluginRepository>    
+				<id>nexus</id>    
+				<url>http://118.190.76.87:7081/repository/maven-public/</url>
+				<releases>
+                    <enabled>true</enabled>
+					<updatePolicy>daily</updatePolicy>
+					<checksumPolicy>warn</checksumPolicy>
+                </releases>
+                <snapshots>
+                    <enabled>true</enabled>
+					<updatePolicy>always</updatePolicy>
+					<checksumPolicy>fail</checksumPolicy>
+                </snapshots>   
+			</pluginRepository>   
+		</pluginRepositories>
+    </profile>
+
+  </profiles>
+
+  <activeProfiles>
+    <activeProfile>nexus-profile</activeProfile>
+  </activeProfiles>
+</settings>
