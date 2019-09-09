@@ -1,0 +1,7 @@
+jenkins 使用过程中遇到的问题
+
+1. jenkins 调用 shell脚本没有启动 应用
+	原因：运用环境为centos7 时，jenkins执行完构建命令，会将启动的进程给杀掉
+	方案：	OLD_BUILD_ID=$BUILD_ID
+			echo $OLD_BUILD_ID
+			BUILD_ID=dontKillMe
