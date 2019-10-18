@@ -99,14 +99,32 @@
 	2.动态代理：分离代理行为与被代理对象，达到代理类复用的目的，例如：记录日志代理类、记录时间代理类，几乎每个系统都会用到。
 		难点：被代理的对象不一定，即被代理的行为不一定
 		方案：不定义具体的代理类，即动态生成代理，这就是动态代理出现的意义
+		缺点：被代理类必须实现接口，这是jdk内部实现所要求的
 
 		jdk实现动态代理关键点（生成代理类）：
 			目标：动态生成代理类
+			0. 被代理类一定要实现接口
 			1. 调用jdk的Proxy.newProxyInstance(arg0, arg1, arg3) 生成代理类;
 			2. arg0:指定类加载器ClassLoad,将生成的代理类加载到内存中(跟被代理对象用一个类加载器即可)；
 			3. arg1:指定代理对象（被代理对象）Class<?>[] inters 实现那些接口；
 			4. arg2:调用处理器InvocationHandler,代理类调用被代理类的处理的业务逻辑（即要指定自己的处理逻辑）
-		原理：查看生成的动态类，发现代理类基础了Proxy类，动态代理类是通过构造器调用Proxy构造器，将InvocationHandler传递给Proxy，因为我们指定了代理类实现的接口，因此动态代理类会调用接口中的方法，在方法中有吊用了Proxy.h.invoke，即调用自己定义的InvocationHandler.invoke();
+			原理：查看生成的动态类，发现代理类基础了Proxy类，动态代理类是通过构造器调用Proxy构造器，将InvocationHandler传递给Proxy，因为我们指定了代理类实现的接口，因此动态代理类会调用接口中的方法，在方法中有吊用了Proxy.h.invoke，即调用自己定义的InvocationHandler.invoke();
+
+			jdk生成代理类，用到了asm操作字节码文件（.class）
+			asm:java才能成为动态语言，反射只能读出来，但是改不了
+
+		cglib实现动态代理（被代理可以不实现接口）：
+			简述：利用Enhancer来生成代理类，利用自定义接口实现MethodInterceptor,指定代理执行器
+			0. 被代理类一定不能被final修饰，原因是，cglib最终生成的代理类，是被代理类的子类
+			1. 创建Enhancer enhancer = new Enhancer();
+			2. 将被代理类指定为父类，enhancer.setSupperclass(Tank.class);
+			3. 定义代理执行器，class TimerMethodInterceptor implements MethodInterceptor{};
+			3. 指定代理执行器，enhancer.setCallback(new TimerMethodInterceptor());
+			4. 生成代理类，Tank tank = (Tank) enhancer.create();
+			5. 执行方法，tank.move();
+
+			cglib 生成代理类，用到了asm操作字节码文件（.class）
+
 
 
 
