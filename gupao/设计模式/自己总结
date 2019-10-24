@@ -210,6 +210,11 @@
 十二、观察者模式
 	概念：观察者模式定义了对象之间的一对多依赖，让多个观察者对象同时监听一个主体对象，当主题对象发生变化时，它的所有依赖都会受到通知并更新
 	     观察者模式有时也叫发布订阅模式
+	案例：学生提出问题，老师接受到通知
+	角色关系：被观察者（学生）observable -> 发生改变（学生）setChanged() -> 添加观察（客户端）者列表addObserver() -> 通知观察者（学生）notifyObservers(question) -> 观察者（老师）接受到更新通知（Observable o, Question q） 
+
+	实现方式： 1. jdk自带的observable、observer
+			  2. guava
 
 
 
