@@ -1,0 +1,11 @@
+一、spring面试相关概念
+	OOP: 面向对象编程（Object Oriented Programming），用程序描述生活中的一切事务，映射到工作中，就是将需求转换为现实代码；
+		主要手段：封装、继承、多态
+	BOP: 面向Bean编程（Bean Oriented Programming），java本身就是面向Bean（豆子）编程，将现实的事物用bean来描述
+		Bean定义：1.必须有包（不是默认的）；2.成员属性私有化，有get、set方法提供对外访问；3.实现序列化接口；4.有无参构造器
+	AOP: 面向切面编程或者说面向规则编程（Aspect Oriented Programming），例如：日志监控、事物、权限等
+	IOC: 控制反转（ Inversion of Control）；
+		控制了什么？   是控制了对象的创建权力。
+		什么正转？     通常我们编程如果A对象，聚合了B对象，就直接在A对象中，new B对象，这种由A来控制B的创建，叫做正转
+		怎么体现反转？  在spring中，我们将对象的创建权力，由A对象转移到spring容器中，并且，是由spring容器往A对象中注入，因此我经常说的反转，是指B对象的创建权力由A				 对象转移到了spring容器，因此实现了反转 
+	DI: 依赖注入、依赖查找（ Dependency Injection），Spring不仅保存自己创建的对象，而且保存对象与对象之间的关系，并且进行赋值
