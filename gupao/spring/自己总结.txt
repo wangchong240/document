@@ -15,4 +15,15 @@
 		1. 基于POJO的轻量级和最小入侵性编程；
 		2. 通过依赖注入和面向接口松耦合；
 		3. 基于切面和惯性进行声明式编程；
-		4. 通过切面和模板减少样板式代码
+		4. 通过切面和模板减少样板式代码。
+	构建源码步骤（spring-framework-5.0.2.RELEASE）
+		1. 进入spring官网，点击github图标进入github；
+		2. 在github页面上选择需要下载的spring的版本（spring-framework-5.0.2.RELEASE）；
+		3. 进入下载完毕的spring源码中，查看build.gradle文件,查看需要什么版本的gradle(gradleVersion = '4.3.1');
+		4. 进入gradle官网，下载指定版本的gradle(gradleVersion = '4.3.1');
+		5. 配置gradle环境变量，GRADLE_HOME = ""; path = "%GRADLE_HOME%\bin",并进入dos命令，查看是否安装成功 gradle -v;
+		6. 用dos命令行进入spring源码文件夹，执行gradlew.bat文件，进行源码构建；
+		7. 如果是用eclipse，还需执行该文件夹下的 import-into-eclipse.bat
+		8. 打开idea,import -> 选择spring-framework-5.0.2.RELEASE -> 选择gradle构建 -> 选择[Use auto-import]、[Create directories for empty content roots automatically]、[Ceate separate modele per source set]、[Use local gradle distribution]
+		9. 设置gradle 本地仓库 创建环境变量 GRADLE_USER_HOME = ""
+		10. 在环境本地仓库添加init.gradle文件
