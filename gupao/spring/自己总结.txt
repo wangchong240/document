@@ -32,3 +32,8 @@
 	查看源码思路： 1. 从宏观了解源码的流程，不要一开始就debugger,会越看越乱
 				  2. 要从类的生命周期去寻找入口；
 	举例说明mvc流程： 前台访问路径 -> web.xml中找到dispatcherServlet -> dispatcherServlet中有init()、service()、destory() -> .......
+
+四、spring IOC 运行时序图
+	1. spring对象和对象的关系怎么表示？ xml、properties、annotation
+	2. 描述对象关系的文件存放在哪里？ classpath、network、filesystem、servletContext
+	3. 如何统一配置文件的标准？ BeanDefintion
