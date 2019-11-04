@@ -53,10 +53,17 @@
 一、spring中的经典面试题：
 	1. spring中的Bean是线程安全吗？
 		spring中的Bean的初始化，是通过扫描，利用反射new出来的并缓存在IOC容器中，spring并没有对你的bean做任何处理，因此Bean的线程安全问题，是取决于bean的本身，与spring不发生关系。
-	2. spring中的Bean是如何被回收的（spring中的bean的生命周期）？
+	2. spring中的Bean是什么时候被回收的（spring中的bean的生命周期）？
 		概念一：spring中的bean的scope（作用域）：singleton（默认）、prototype（原型或多实例）、request、session、application、websocket
 		概念二：bean的生命周期：bean的作用域不同，其生命周期就不同
 		概念三：GC回收原则，当对象的引用没有指向任何地方时，该对象才被回收
 		答案：每个bean的作用域不同，其生命周期就不同，也就被GC回收的时机就不同，例如：spring中默认bean的作用域为singleton（单例）,而bean创建之后，会被存储在IOC容器中，是基于spring上下文的，而IOC容器是随着spring存亡而存亡，因此只要IOC存活，bean就被IOC所引用，因此，在单例模式下，只有spring死亡之后，才会被GC回收
+
+二、过滤器、拦截器、AOP（Aspect）应用场景
+	1. 共同点：AOP是一种面向切面编程的思想，无论是过滤器、还是拦截器都是AOP思想的具体实现；
+	2. 运行顺序：页面URL请求 -> web容器接受请求（tomcat）-> 过滤器（Filter）-> dispatchController(控制器) -> 拦截器（preHandler()）-> Controller实体 -> 拦截器（postHandler()）-> jsp -> 拦截器（afterCompletion）->页面展示
+	总结：
+		三者功能类似，但各有优势，从过滤器--》拦截器--》切面，拦截规则越来越细致，执行顺序依次是过滤器、拦截器、切面。一般情况下数据被过滤的时机越早对服务的性能影响越小，因此我们在编写相对比较公用的代码时，优先考虑过滤器，然后是拦截器，最后是aop。比如权限校验，一般情况下，所有的请求都需要做登陆校验，此时就应该使用过滤器在最顶层做校验；日志记录，一般日志只会针对部分逻辑做日志记录，而且牵扯到业务逻辑完成前后的日志记录，因此使用过滤器不能细致地划分模块，此时应该考虑拦截器，然而拦截器也是依据URL做规则匹配，因此相对来说不够细致，因此我们会考虑到使用AOP实现，AOP可以针对代码的方法级别做拦截，很适合日志功能
+
 
 

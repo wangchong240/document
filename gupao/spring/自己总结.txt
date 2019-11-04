@@ -36,4 +36,7 @@
 四、spring IOC 运行时序图
 	1. spring对象和对象的关系怎么表示？ xml、properties、annotation
 	2. 描述对象关系的文件存放在哪里？ classpath、network、filesystem、servletContext
-	3. 如何统一配置文件的标准？ BeanDefintion
+	3. 如何统一配置文件的标准？ BeanDefinition,会将来自不同文件配置信息，统一管理,并且存放在IOC容器中
+	4. 如何对不同的配置文件进行解析? 利用策略模式，对不同不同的配置文件，进行解析，最终解析成BeanDefinition
+	5. BeanFactory是bean工厂（容器）的顶级类，其实现类会保存不同的关系，比如：HierarchicalBeanFactory（保存基础关系）、ListableBeanFactory（保存集合关系）、AutowireCapableBeanFactory（利用注解之间的类的关系）
+	6. BeanFactory(定义容器)、BeanDefinition（负责存储配置信息）、BeanDefinitionReader（负责读取配置信息）
