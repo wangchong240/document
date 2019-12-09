@@ -61,6 +61,8 @@
 	3. FactoryBean与BeanFactory区别？
 	   FactoryBean：是工厂的本身的实体，主要是spring内部使用，当然我们也可以获取，一般以&+beanName,因此spring中的所有容器都是FactoryBean,因为容器本身也由容器管理，root容器创建并管理，都是单例放在IOC容器中
 	   BeanFactory：Bean工厂的顶层规范，只是定义了getBean()等其他的方法。
+	4. spring源码中怎么解决循环依赖的问题？
+	   spring在会调用getBean(String beanName)的时候，内部分成2步，第一步先初始化bean，调用instantiateBean(beanName,beanDefinition);第二步在进行依赖注入，如果没有对应的bean，则根据beanDefinition（bean的元数据），进行创建。
 
 
 二、过滤器、拦截器、AOP（Aspect）应用场景
@@ -68,6 +70,14 @@
 	2. 运行顺序：页面URL请求 -> web容器接受请求（tomcat）-> 过滤器（Filter）-> dispatchController(控制器) -> 拦截器（preHandler()）-> Controller实体 -> 拦截器（postHandler()）-> jsp -> 拦截器（afterCompletion）->页面展示
 	总结：
 		三者功能类似，但各有优势，从过滤器--》拦截器--》切面，拦截规则越来越细致，执行顺序依次是过滤器、拦截器、切面。一般情况下数据被过滤的时机越早对服务的性能影响越小，因此我们在编写相对比较公用的代码时，优先考虑过滤器，然后是拦截器，最后是aop。比如权限校验，一般情况下，所有的请求都需要做登陆校验，此时就应该使用过滤器在最顶层做校验；日志记录，一般日志只会针对部分逻辑做日志记录，而且牵扯到业务逻辑完成前后的日志记录，因此使用过滤器不能细致地划分模块，此时应该考虑拦截器，然而拦截器也是依据URL做规则匹配，因此相对来说不够细致，因此我们会考虑到使用AOP实现，AOP可以针对代码的方法级别做拦截，很适合日志功能
+
+三、线程安全相关
+	1. 你用过synchronized关键字吗？或者你在工作当中怎么保证线程安全的问题？
+		概念一：使用synchronized产生了什么意思？
+			如果代码中使用synchronized关键字时，线程执行到此处，会向别人索要锁，如果索要成功，则执行代码逻辑。
+		概念二：java锁的分类？
+			以我的理解，锁按照索要对象的不同，可以分为类锁、实例锁，例如：String.class中存在一把类锁，而new String();这个实例，也会存在一把实例锁。
+		概念三：实现不同锁的方案？
 
 
 
