@@ -1,0 +1,30 @@
+两种方式：
+	方式一：借助idea进行离线打包
+	 1.项目的依赖，必须由远程仓库下载到本地仓库；
+	 2.设置idea的maven为离线模式  maven -》work offine
+	 3.settings.xml文件中设置为离线模式   <offline>true</offline>
+	 4.更改maven的setting.xml的镜像为本地仓库
+			<mirrors>
+				<mirror>
+				  <id>central</id>
+				  <mirrorOf>*</mirrorOf>
+				  <name>central</name>
+				  <url>file://D:\MyRepository</url>
+				</mirror>
+			 </mirrors>
+			 
+	方式二：利用maven，配置maven环境变量
+	 1.右击计算机，选择属性->高级系统设置->环境变量，点击系统变量的新建按钮。添加新的系统环境变量MAVEN_HOME，设置值为maven的路径   D:\apache-maven-3.3.9
+	 2.配置系统的classpath变量，在其尾部加添加[;%MAVEN_HOME%\bin;]
+	 3.cmd 验证  maven -v
+	 4.settings.xml文件中设置为离线模式   <offline>true</offline>
+	 5.更改maven的setting.xml的镜像为本地仓库
+			<mirrors>
+				<mirror>
+				  <id>central</id>
+				  <mirrorOf>*</mirrorOf>
+				  <name>central</name>
+				  <url>file://D:\MyRepository</url>
+				</mirror>
+			 </mirrors>
+	 6.切换至项目路径，执行 mvn clean package ，进行打包
