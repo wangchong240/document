@@ -1,0 +1,26 @@
+--修改oracle数据的最大session数
+1. 查看当前会话数
+conn / as sysdba
+select count(*) from v$session;
+
+2. 查看数据库最大进程数
+show parameter processes
+
+3. 查看数据库最大会话数
+show parameter sessions
+
+4. 修改processes和sessions值
+alter system set processes=400 scope=spfile;
+alter system set sessions=400 scope=spfile;
+注：一般只执行第一个命令就可以，session自动更改
+
+5.创建pfile
+create pfile from spfile;
+注：如果不做此步，可能会导致更改最大连接数之后数据库不能启动现象
+
+6. 重启数据库，使更改生效
+shutdown immediate
+startup
+
+7. 查看进程数，会话数，已经修改过来了
+show parameter processes;
